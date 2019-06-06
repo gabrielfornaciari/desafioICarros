@@ -3,32 +3,11 @@ package br.com.fornaciari.desafio.icarros.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Document(collection = "formula1")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResultGrandPrix {
 	
-	public ResultGrandPrix() {
-		
-	}
-	
-	public ResultGrandPrix(String position, Integer number, String driver, String constructor, Integer laps,
-			Integer grid, String time, String status, Integer points) {
-		super();
-		this.position = position;
-		this.number = number;
-		this.driver = driver;
-		this.constructor = constructor;
-		this.laps = laps;
-		this.grid = grid;
-		this.time = time;
-		this.status = status;
-		this.points = points;
-	}
-
-
 
 	@Id
 	private String id;
