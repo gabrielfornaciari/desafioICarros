@@ -1,2 +1,2 @@
-# API REST PARA OS RESULTADOS DA ULTIMA CORRIDA DE FÓRMULA 1 DE 2017
+# API REST para os resultados da ultima corrida de fórmula 1 de 2017
 
