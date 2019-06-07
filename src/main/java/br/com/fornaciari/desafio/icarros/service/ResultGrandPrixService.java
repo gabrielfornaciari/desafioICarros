@@ -17,7 +17,7 @@ import br.com.fornaciari.desafio.icarros.repository.ResultGrandPrixRepository;
 @Service
 public class ResultGrandPrixService {
 
-	private final String URI = "https://ergast.com/api/f1/2017/last/results.json";
+	private final String URI = "https://ergast.com/api/f1/year/last/results.json";
 
 	@Autowired
 	private ResultGrandPrixRepository grandPrixRepository;
@@ -25,26 +25,26 @@ public class ResultGrandPrixService {
 	public ResultGrandPrix saveResult(ResultGrandPrix resultGrandPrix) {
 		return grandPrixRepository.save(resultGrandPrix);
 	}
-
-	public List<ResultGrandPrix> listResult() {
-		List<ResultGrandPrix> result = grandPrixRepository.findAll();
+	
+	public List<ResultGrandPrix> listResultPerYear(Integer year) {
+		List<ResultGrandPrix> result = grandPrixRepository.findByYear(year);
 		if (result != null && !result.isEmpty()) {
 			return result;
 		} else {
-			List<ResultGrandPrix> resultsGrandPrix = searchInApi();
+			List<ResultGrandPrix> resultsGrandPrix = searchInApi(year);
 			for (ResultGrandPrix resultGrandPrix : resultsGrandPrix) {
 				saveResult(resultGrandPrix);
 			}
 			return resultsGrandPrix;
 		}
 	}
-
-	public List<ResultGrandPrix> listTopThree() {
-		List<ResultGrandPrix> listGrandPrix = grandPrixRepository.findAll();
+	
+	public List<ResultGrandPrix> listTopThreePerYear(Integer year) {
+		List<ResultGrandPrix> listGrandPrix = grandPrixRepository.findByYear(year);
 		if (listGrandPrix != null && !listGrandPrix.isEmpty()) {
 			return listGrandPrix.subList(0, 3);
 		} else {
-			List<ResultGrandPrix> resultsGrandPrix = searchInApi();
+			List<ResultGrandPrix> resultsGrandPrix = searchInApi(year);
 			for (ResultGrandPrix resultGrandPrix : resultsGrandPrix) {
 				saveResult(resultGrandPrix);
 			}
@@ -53,10 +53,10 @@ public class ResultGrandPrixService {
 		}
 	}
 
-	private List<ResultGrandPrix> searchInApi() {
+	private List<ResultGrandPrix> searchInApi(Integer year) {
 		List<ResultGrandPrix> results = new ArrayList<>();
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<ResultGrandPrixJson> responseEntity = restTemplate.getForEntity(URI, ResultGrandPrixJson.class);
+		ResponseEntity<ResultGrandPrixJson> responseEntity = restTemplate.getForEntity(URI.replaceAll("year", year.toString()), ResultGrandPrixJson.class);
 		List<RacesJson> races = responseEntity.getBody().getMRData().getRaceTable().getRaces();
 		for (RacesJson race : races) {
 			for (ResultsJson result : race.getResults()) {
@@ -69,6 +69,7 @@ public class ResultGrandPrixService {
 				resultGrandPrix.setPoints(result.getPoints());
 				resultGrandPrix.setPosition(result.getPosition());
 				resultGrandPrix.setStatus(result.getStatus());
+				resultGrandPrix.setYear(responseEntity.getBody().getMRData().getRaceTable().getSeason());
 				if (result.getTime() != null) {
 					resultGrandPrix.setTime(result.getTime().getTime());
 				}

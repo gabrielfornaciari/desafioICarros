@@ -29,6 +29,8 @@ public class ResultGrandPrix {
 	private String status;
 	
 	private Integer points;
+	
+	private Integer year;
 
 	public String getId() {
 		return id;
@@ -108,6 +110,14 @@ public class ResultGrandPrix {
 
 	public void setPoints(Integer points) {
 		this.points = points;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
 	}
 	
 }

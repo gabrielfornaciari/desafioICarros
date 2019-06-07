@@ -10,6 +10,9 @@ public class RaceTableJson {
 	
 	@JsonProperty
 	private List<RacesJson> Races;
+	
+	@JsonProperty
+	private Integer season;
 
 	public List<RacesJson> getRaces() {
 		return Races;
@@ -17,6 +20,14 @@ public class RaceTableJson {
 
 	public void setRaces(List<RacesJson> races) {
 		Races = races;
+	}
+
+	public Integer getSeason() {
+		return season;
+	}
+
+	public void setSeason(Integer season) {
+		this.season = season;
 	}
 	
 }
